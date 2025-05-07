@@ -1,0 +1,105 @@
+﻿@model List<Property>
+@{
+    ViewData["Title"] = "Find Your Dream Home";
+}
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="overlay">
+            <div class="hero-content text-center">
+                <h1>Find Your Dream Home</h1>
+                <p>Explore the finest properties at Maharlika Grand Estate.</p>
+                <form method="get" action="@Url.Action("Browse", "Buyer")" class="search-bar">
+                    <input type="text" name="search" placeholder="Search properties...">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <h2>About Maharlika Grand Estate</h2>
+            <p>Your gateway to luxurious, modern, and affordable homes.</p>
+
+            <div class="why-choose-us container mt-4">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="feature">
+                            <i class="fas fa-hand-holding-usd fa-2x"></i>
+                            <h4>Affordable Prices</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature">
+                            <i class="fas fa-home fa-2x"></i>
+                            <h4>Modern Architecture</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature">
+                            <i class="fas fa-leaf fa-2x"></i>
+                            <h4>Eco-Friendly Spaces</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature">
+                            <i class="fas fa-lock fa-2x"></i>
+                            <h4>24/7 Security</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Featured Listings -->
+    <section id="featured" class="featured-listings">
+        <h2>Featured Properties</h2>
+        <div class="property-grid">
+            @if (Model != null && Model.Any())
+            {
+            @foreach (var property in Model)
+            {
+                <div class="property-card">
+                    <img src="@Url.Content(property.ImageUrl ?? "~/images/default-house.png")"
+                         alt="@property.Title"
+                         class="w-full h-64 object-cover rounded-t-lg"
+                         onerror="this.onerror=null;this.src='@Url.Content("~/images/default-house.png")';" />
+                    <h3>@property.Title</h3>
+                    <p>@property.Location</p>
+                    <p><strong>@property.Price.ToString("C")</strong></p>
+                    <a href="@Url.Action("Details", "Buyer", new { id = property.Id })" class="btn-primary-custom">View Details</a>
+                </div>
+            }
+
+            }
+            else
+            {
+                <p>No featured properties available.</p>
+            }
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <div class="parallax cta-section">
+        <div class="cta-content">
+            <h2>List Your Property With Us</h2>
+            <p>Join Maharlika Grand Estate today and showcase your properties.</p>
+            <a href="@Url.Action("Create", "Properties")" class="btn btn-warning">List Your Property</a>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="container text-center py-3">
+        <h2>Get in Touch</h2>
+        <p>Email: contact@maharlikaestate.com</p>
+        <p>Phone: +63 915 611 3016</p>
+        <a href="@Url.Action("Contact", "Home")" class="btn btn-secondary">Contact Us</a>
+        <a href="#featured-properties" class="btn-learn-more">Learn More</a>
+    </div>
+
+

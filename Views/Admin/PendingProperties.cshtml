@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Pending Properties";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center mb-4 text-dark fw-bold">Pending Properties</h2>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th class="p-3">Title</th>
+                        <th class="p-3">Location</th>
+                        <th class="p-3">Price</th>
+                        <th class="p-3">Image</th>
+                        <th class="p-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var property in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold text-dark">@property.Title</td>
+                            <td class="text-muted">@property.Location</td>
+                            <td class="text-success fw-bold">₱@property.Price.ToString("N2")</td>
+                            <td class="text-center">
+                                @if (!string.IsNullOrEmpty(property.ImageUrl))
+                                {
+                                    <img src="@Url.Content("~/" + property.ImageUrl)" alt="Property Image" class="rounded shadow-sm" style="max-width: 120px; height: auto;">
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No image</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <!-- Details Button -->
+                                <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="btn btn-outline-info btn-sm me-3 mb-2" data-bs-toggle="tooltip" data-bs-placement="top" title="View Property Details">
+                                    <i class="fas fa-info-circle"></i> Details
+                                </a>
+
+                                <!-- Approve Button -->
+                                <a asp-controller="Admin" asp-action="ApproveProperty" asp-route-id="@property.Id" class="btn btn-outline-success btn-sm me-3 mb-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Approve Property">
+                                    <i class="fas fa-check-circle"></i> Approve
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Back Button -->
+        <div class="text-center mt-4">
+            <a onclick="history.back()" class="btn btn-dark px-4 py-2 shadow-sm">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>

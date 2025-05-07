@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav ms-auto">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        var roles = user != null ? await UserManager.GetRolesAsync(user) : new List<string>();
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle btn btn-outline-secondary rounded-pill" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                <i class="fas fa-user"></i> @user?.Email
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+
+                @if (roles.Contains("Admin"))
+                {
+                    <li>
+                        <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="Dashboard">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                }
+                else if (roles.Contains("Lister"))
+                {
+                    <li>
+                        <a class="dropdown-item" asp-area="" asp-controller="Lister" asp-action="Dashboard">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                }
+
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                    <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Content("~/")">
+                        <button type="submit" class="dropdown-item text-dark">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle btn btn-outline-secondary rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="fas fa-user"></i> Account
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Log in</a></li>
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register"><i class="fas fa-user-plus"></i> Sign up</a></li>
+            </ul>
+        </li>
+    }
+</ul>

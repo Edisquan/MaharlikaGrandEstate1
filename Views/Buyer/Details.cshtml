@@ -1,0 +1,140 @@
+﻿@model Property
+
+@{
+    ViewData["Title"] = "Property Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Left: Property Image & Carousel -->
+        <div class="col-md-6">
+            <!-- Main Image -->
+            <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal">
+                <img src="@Url.Content("~/" + Model.ImageUrl)" alt="@Model.Title" class="img-fluid rounded shadow-sm">
+            </a>
+
+            <!-- Additional Images Carousel -->
+            @if (Model.Images != null && Model.Images.Any())
+            {
+                <div id="propertyImagesCarousel" class="carousel slide mt-3" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < Model.Images.Count(); i++)
+                        {
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="@Url.Content("~/" + Model.Images.ElementAt(i).ImageUrl)" class="d-block w-100 rounded" style="max-height: 300px; object-fit: cover;">
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#propertyImagesCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#propertyImagesCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            }
+        </div>
+
+        <!-- Right: Property Info -->
+        <div class="col-md-6">
+            <h2 class="mb-3">@Model.Title</h2>
+            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> @Model.Location</p>
+            <p class="fw-bold text-success" style="font-size: 1.5rem;">₱@Model.Price.ToString("N2")</p>
+
+            <!-- Property Features -->
+            <div class="row mt-3">
+                <div class="col-6">
+                    <p><i class="fas fa-bed"></i> Bedrooms: @Model.Bedrooms</p>
+                    <p><i class="fas fa-bath"></i> Bathrooms: @Model.Bathrooms</p>
+                    <p><i class="fas fa-ruler-combined"></i> Size: @Model.Size sq ft</p>
+                </div>
+                <div class="col-6">
+                    <p><i class="fas fa-calendar"></i> Built: @Model.YearBuilt</p>
+                    <p><i class="fas fa-parking"></i> @(Model.HasParking ? "Has Parking" : "No Parking")</p>
+                    <p><i class="fas fa-couch"></i> @Model.FurnishingStatus</p>
+                </div>
+            </div>
+
+            <!-- Inquiry Button -->
+            <a asp-controller="Inquiry" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary">
+                <i class="fas fa-envelope"></i> Contact Seller
+            </a>
+            <!-- 🔹 Reservation Payment with Stripe -->
+            @if (!Model.IsReserved)
+            {
+                <div class="mt-4">
+                    <form asp-controller="Buyer" asp-action="ReservePayment" method="get">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="fas fa-credit-card"></i> Pay & Reserve (₱@Model.ReservationFee.ToString("N2"))
+                        </button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info mt-4">
+                    <strong>Reserved!</strong> This property has already been reserved by another buyer.
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Property Description -->
+    <div class="mt-5">
+        <h4>Property Description</h4>
+        <p>@Model.Description</p>
+    </div>
+
+    <!-- Google Maps -->
+    <div class="mt-5">
+        <h4>Location</h4>
+        <div id="map" style="width: 100%; height: 400px;"></div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-4">
+        <a asp-controller="Buyer" asp-action="Browse" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Browse Properties
+        </a>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">@Model.Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="@Url.Content("~/" + Model.ImageUrl)" class="img-fluid" alt="@Model.Title">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function initMap() {
+            var lat = parseFloat('@(Model.Latitude?.ToString() ?? "7.1907")');
+            var lng = parseFloat('@(Model.Longitude?.ToString() ?? "125.4553")');
+
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: lat, lng: lng },
+                zoom: 15
+            });
+
+            var marker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5NF2mCdRLZMDIiFHHS8VuJkT_uopJMJQ&callback=initMap">
+    </script>
+}

@@ -1,0 +1,184 @@
+﻿@model Property
+
+@{
+    ViewData["Title"] = "Create Property";
+}
+
+<h2 class="mb-4">Create Property</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ModelErrors"] != null)
+{
+    <div class="alert alert-danger">@TempData["ModelErrors"]</div>
+}
+
+<!-- Validation Summary -->
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <!-- Property Title -->
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <!-- Price & Location -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="Price" class="form-label"></label>
+            <input asp-for="Price" type="number" step="0.01" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Location" class="form-label"></label>
+            <input asp-for="Location" class="form-control" id="locationField" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+    </div>
+
+    <!-- Property Features -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label asp-for="Bedrooms" class="form-label"></label>
+            <input asp-for="Bedrooms" type="number" min="0" class="form-control" />
+            <span asp-validation-for="Bedrooms" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Bathrooms" class="form-label"></label>
+            <input asp-for="Bathrooms" type="number" min="0" class="form-control" />
+            <span asp-validation-for="Bathrooms" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Size" class="form-label"></label>
+            <input asp-for="Size" type="number" step="0.1" class="form-control" placeholder="e.g., sqft or m²" />
+            <span asp-validation-for="Size" class="text-danger"></span>
+        </div>
+    </div>
+
+    <!-- Year Built & Parking -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="YearBuilt" class="form-label"></label>
+            <input asp-for="YearBuilt" type="number" class="form-control" placeholder="e.g., 2010" />
+            <span asp-validation-for="YearBuilt" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <div class="form-check mt-4">
+                <input asp-for="HasParking" class="form-check-input" type="checkbox" />
+                <label asp-for="HasParking" class="form-check-label"></label>
+                <span asp-validation-for="HasParking" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Furnishing Status -->
+    <div class="mb-3">
+        <label asp-for="FurnishingStatus" class="form-label"></label>
+        <select asp-for="FurnishingStatus" class="form-select">
+            <option value="Unfurnished">Unfurnished</option>
+            <option value="Semi-Furnished">Semi-Furnished</option>
+            <option value="Fully Furnished">Fully Furnished</option>
+        </select>
+        <span asp-validation-for="FurnishingStatus" class="text-danger"></span>
+    </div>
+
+    <!-- Multiple Image Upload -->
+    <div class="mb-3">
+        <label>Upload Images</label>
+        <input type="file" name="imageFiles" id="imageFiles" class="form-control" multiple />
+        <div id="imagePreviewContainer" class="mt-2"></div>
+    </div>
+
+    <!-- Add More Images Button -->
+    <button type="button" class="btn btn-secondary mt-2" id="addMoreImagesBtn">+ Add More Images</button>
+
+    <!-- Address Search for Google Maps -->
+    <div class="mb-3">
+        <label for="addressInput" class="form-label">Search Address (for map location)</label>
+        <input type="text" id="addressInput" class="form-control" placeholder="Enter address here" />
+    </div>
+
+    <!-- Map Section -->
+    <div class="mb-3">
+        <label>Select Location on Map:</label>
+        <div id="map" style="width:100%; height:400px; margin-bottom:10px;"></div>
+    </div>
+
+    <!-- Hidden Fields for Lat & Lng -->
+    <input type="hidden" asp-for="Latitude" id="Latitude" />
+    <input type="hidden" asp-for="Longitude" id="Longitude" />
+
+    <!-- Submit Button -->
+    <div class="mt-3">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a onclick="history.back()" class="btn btn-secondary">Back</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('imageFiles').addEventListener('change', function(evt) {
+            var container = document.getElementById('imagePreviewContainer');
+            container.innerHTML = "";
+
+            for (let file of this.files) {
+                let img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                img.style = "max-width: 100px; margin: 5px;";
+                container.appendChild(img);
+            }
+        });
+
+        function initMap() {
+            var defaultCenter = {  lat: 7.0731, lng: 125.6128 };
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center: defaultCenter,
+                zoom: 13
+            });
+
+            var marker = new google.maps.Marker({
+                position: defaultCenter,
+                map: map,
+                draggable: true
+            });
+
+            document.getElementById('Latitude').value = defaultCenter.lat;
+            document.getElementById('Longitude').value = defaultCenter.lng;
+
+            google.maps.event.addListener(marker, 'dragend', function(evt) {
+                document.getElementById('Latitude').value = evt.latLng.lat();
+                document.getElementById('Longitude').value = evt.latLng.lng();
+            });
+
+            var input = document.getElementById('addressInput');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                if (!place.geometry) return;
+                map.setCenter(place.geometry.location);
+                marker.setPosition(place.geometry.location);
+                document.getElementById('Latitude').value = place.geometry.location.lat();
+                document.getElementById('Longitude').value = place.geometry.location.lng();
+                document.getElementById('locationField').value = place.formatted_address;
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWjOJTrWs21hfvIgGkgDYDI-3sJjCGmrQ&libraries=places&callback=initMap"></script>
+}

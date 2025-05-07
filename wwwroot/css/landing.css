@@ -1,0 +1,154 @@
+﻿body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+}
+
+/* Hero Section */
+.hero-section {
+    background: url('../images/background.jpg') fixed center no-repeat;
+    background-size: cover;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+    .hero-section h1 {
+        color: white;
+        font-weight: bold;
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for visibility */
+    }
+
+    .hero-section p {
+        color: white;
+        font-size: 18px;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+    .search-bar input {
+        padding: 12px;
+        width: 350px;
+        border: none;
+        border-radius: 24px 0 0 24px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .search-bar button {
+        padding: 12px 20px;
+        border: none;
+        background: #ff385c;
+        color: white;
+        border-radius: 0 24px 24px 0;
+        cursor: pointer;
+    }
+
+        .search-bar button:hover {
+            background: #ff5a76;
+        }
+
+/* Featured Listings */
+.featured-listings {
+    padding: 3rem;
+    background-color: #fff;
+    text-align: center;
+}
+
+    .featured-listings h2 {
+        margin-bottom: 2rem;
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.property-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s;
+}
+
+    .property-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .property-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .property-card h3, .property-card p {
+        margin: 0.5rem;
+        color: #333;
+    }
+
+/* Call-to-Action Section */
+.cta-section {
+    background: url('../images/design1.jpg') fixed center no-repeat;
+    background-size: cover;
+    padding: 4rem 1rem;
+    color: white;
+    text-align: center;
+}
+
+    .cta-section h2 {
+        font-size: 2rem;
+    }
+
+.btn-primary-custom {
+    display: inline-block;
+    padding: 0.7rem 2rem;
+    background-color: #a78bfa;
+    color: white;
+    border-radius: 24px;
+    margin-top: 1rem;
+    text-decoration: none;
+}
+
+    .btn-primary-custom:hover {
+        background-color: #8b5cf6;
+    }
+
+/* Contact Section */
+.contact-section {
+    padding: 3rem 1rem;
+    background-color: #333;
+    color: white;
+    text-align: center;
+}
+
+    .contact-section h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+.about-section {
+    background-color: #ffffff;
+    padding: 3rem 0;
+    text-align: center;
+}
+
+    .about-section .fa-2x {
+        color: #a78bfa; /* pastel violet icon color */
+        margin-bottom: 1rem;
+    }
+
+    .about-section h5 {
+        color: #333;
+        font-weight: 600;
+    }

@@ -1,0 +1,68 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MaharlikaGrandEstate</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-left">
+            <a href="@Url.Action("Index", "Home")" class="back-button">
+                &#8592; Back to Home
+            </a>
+            <img src="~/images/MaharlikaGE.png" alt="Maharlika Grand Estate" class="login-image">
+        </div>
+        <div class="login-right">
+            <div class="login-box">
+                <h2 class="text-white">Welcome Back</h2>
+                <p class="text-light">Sign in to continue</p>
+
+
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control text-white" autocomplete="username" placeholder="name@example.com" />
+                        <label asp-for="Input.Email">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" type="password" class="form-control text-white" autocomplete="current-password" placeholder="password" />
+                        <label asp-for="Input.Password">Password</label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            <label asp-for="Input.RememberMe" class="text-white">Remember me</label>
+                        </div>
+                        <a id="forgot-password" asp-page="./ForgotPassword" class="text-light">Forgot password?</a>
+                    </div>
+
+                    <button id="login-submit" type="submit" class="btn btn-primary w-100">Log in</button>
+
+                    <div class="text-center mt-3">
+                        <p class="text-light">Don't have an account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-white">Sign up</a></p>
+                    </div>
+                    <hr />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

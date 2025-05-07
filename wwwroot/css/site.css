@@ -1,0 +1,45 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+    body
+
+{
+    padding-top: 80px; /* to accommodate fixed-top navbar */
+}
+
+.navbar {
+    z-index: 1050; /* Ensure navbar stays above everything */
+}
+.dropdown-menu {
+    z-index: 1100; /* Ensures dropdown appears above content */
+}
+
+.container-fluid {
+    margin-top: 10px; /* Reduce this if needed */
+}
+
+.card:hover {
+    transform: scale(1.03);
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    filter: brightness(90%);
+    transition: 0.3s ease-in-out;
+}

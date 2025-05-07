@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Property>
+
+@{
+    ViewData["Title"] = "My Reservations";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">My Reserved Properties</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            You have not reserved any properties yet.
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var property in Model)
+            {
+                <div class="col">
+                    <div class="card property-card shadow-sm">
+                        <img src="@Url.Content("~/" + property.ImageUrl)" alt="@property.Title" class="card-img-top property-image">
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@property.Title</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> @property.Location</p>
+                            <p class="fw-bold text-success price">₱@property.Price.ToString("N2")</p>
+
+                            <!-- Reservation Fee -->
+                            <p class="text-warning">
+                                <i class="fas fa-coins"></i> Reservation Fee: ₱@((property.Price * 0.10M).ToString("N2")) (10% of total price)
+                            </p>
+
+                            <div class="mt-auto">
+                                <a asp-controller="Buyer" asp-action="Details" asp-route-id="@property.Id" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-info-circle"></i> View Details
+                                </a>
+
+                                <!-- Revert Reservation Button -->
+                                <form asp-controller="Buyer" asp-action="RevertReservation" method="post" class="mt-2">
+                                    <input type="hidden" name="propertyId" value="@property.Id" />
+                                    <button type="submit" class="btn btn-outline-danger w-100">
+                                        <i class="fas fa-undo"></i> Cancel Reservation
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- Back Button to Browse (At Bottom) -->
+    <div class="text-center mt-4">
+        <a asp-controller="Buyer" asp-action="Browse" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Browse Properties
+        </a>
+    </div>
+</div>

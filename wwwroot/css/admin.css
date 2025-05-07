@@ -1,0 +1,45 @@
+﻿/* Admin-specific adjustments .table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+    .table th {
+        background-color: #343a40 !important;
+        color: white;
+        text-transform: uppercase;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-outline-info:hover {
+    background-color: #17a2b8 !important;
+    color: white !important;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745 !important;
+    color: white !important;
+}
+
+.btn-dark:hover {
+    background-color: #212529 !important;
+}
+.card {
+    border-radius: 10px;
+    transition: 0.3s ease-in-out;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card i {
+        opacity: 0.8;
+    }
+
+canvas {
+    max-height: 300px;
+}
+    */

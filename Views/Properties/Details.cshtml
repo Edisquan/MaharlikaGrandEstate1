@@ -1,0 +1,183 @@
+﻿@model Property
+
+@{
+    ViewData["Title"] = "Property Details";
+}
+
+<div class="container mt-4 property-details">
+    <h2 class="mb-3">@Model.Title</h2>
+    <div class="row">
+        <!-- Left Column: Image and Description -->
+        <div class="col-md-8">
+            <!-- Property Image -->
+            <div class="mb-3">
+                @if (Model.Images != null && Model.Images.Any())
+                {
+                    <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < Model.Images.Count; i++)
+                            {
+                                var image = Model.Images.ElementAt(i);
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <img src="@Url.Content("~/" + image.ImageUrl)"
+                                         class="d-block w-100 property-image"
+                                         data-image="@Url.Content("~/" + image.ImageUrl)"
+                                         alt="Property Image @(i + 1)"
+                                         style="height:400px; object-fit:cover;"
+                                         data-bs-toggle="modal" data-bs-target="#imageModal" />
+                                </div>
+                            }
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                }
+                else if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Url.Content("~/" + Model.ImageUrl)"
+                         alt="Property Image"
+                         class="img-fluid rounded" />
+                }
+                else
+                {
+                    <p>No image available.</p>
+                }
+
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <h4>Description</h4>
+                <p>@Model.Description</p>
+            </div>
+
+            <!-- Property Features -->
+            <ul class="list-group mb-3">
+                <li class="list-group-item">
+                    <strong>Price:</strong>
+                    <span class="fw-bold text-success">
+                        ₱@Model.Price.ToString("N2")
+                    </span>
+                </li>
+                <li class="list-group-item"><strong>Location:</strong> @Model.Location</li>
+                <li class="list-group-item"><strong>Bedrooms:</strong> @Model.Bedrooms</li>
+                <li class="list-group-item"><strong>Bathrooms:</strong> @Model.Bathrooms</li>
+                @if (Model.Size.HasValue)
+                {
+                    <li class="list-group-item">
+                        <strong>Size:</strong> @Model.Size.Value.ToString("N1") sq ft
+                    </li>
+                }
+                @if (Model.YearBuilt.HasValue)
+                {
+                    <li class="list-group-item">
+                        <strong>Year Built:</strong> @Model.YearBuilt
+                    </li>
+                }
+                <li class="list-group-item">
+                    <strong>Parking:</strong>
+                    @(Model.HasParking ? "Available" : "No Parking")
+                </li>
+                <li class="list-group-item">
+                    <strong>Furnishing:</strong> @Model.FurnishingStatus
+                </li>
+                <li class="list-group-item">
+                    <strong>Created At:</strong> @Model.CreatedAt.ToString("g")
+                </li>
+            </ul>
+        </div>
+
+        <!-- Right Column: Map and Actions -->
+        <div class="col-md-4">
+            <div class="mb-3">
+                <h4>Property Location</h4>
+                <div id="map"
+                     style="width:100%; height:300px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                @if (User.IsInRole("Admin") || User.IsInRole("Lister"))
+                {
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-warning w-100 mb-2">
+                        <i class="fas fa-edit"></i> Edit Property
+                    </a>
+                }
+                @if (User.IsInRole("Buyer"))
+                {
+                    <a asp-controller="Inquiry"
+                       asp-action="Create"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-primary w-100">
+                        <i class="fas fa-envelope"></i> Send Inquiry
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-3">
+        <a onclick="history.back()" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+</div>
+
+<!-- Image Modal for Full-Screen Image View -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" class="img-fluid" alt="Property Image" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+         // This function will set the clicked image in the modal
+                 document.addEventListener('DOMContentLoaded', function () {
+            const imageElements = document.querySelectorAll('.property-image');
+            imageElements.forEach(function (image) {
+                image.addEventListener('click', function () {
+                    const imageUrl = image.getAttribute('data-image');
+                    document.getElementById('modalImage').src = imageUrl;
+                });
+            });
+        });
+
+        function initMap() {
+            var lat = parseFloat('@(Model.Latitude?.ToString() ?? "7.1907")');
+            var lng = parseFloat('@(Model.Longitude?.ToString() ?? "125.4553")');
+            var propertyLocation = { lat: lat, lng: lng };
+
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center: propertyLocation,
+                zoom: 15
+            });
+            var marker = new google.maps.Marker({
+                position: propertyLocation,
+                map: map,
+                draggable: false
+            });
+        }
+    </script>
+
+    <!-- Replace YOUR_API_KEY with your actual key -->
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWjOJTrWs21hfvIgGkgDYDI-3sJjCGmrQ&libraries=places,geometry,geocoding&callback=initMap">
+    </script>
+}

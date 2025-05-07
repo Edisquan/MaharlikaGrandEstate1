@@ -1,0 +1,10 @@
+﻿@model ApplicationUser
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<h2>My Profile</h2>
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Full Name:</strong> @Model.FullName</p>
+
+<a asp-action="Edit" class="btn btn-primary">Edit Profile</a>

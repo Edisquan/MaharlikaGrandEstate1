@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Lister Dashboard";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">📋 Lister Dashboard</h2>
+
+    <div class="row justify-content-center">
+        <!-- My Properties -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-home fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">My Properties</h5>
+                    <p class="card-text display-6 fw-bold">@ViewBag.MyPropertiesCount</p>
+                    <a class="btn btn-primary w-100" asp-controller="Properties" asp-action="Index">
+                        <i class="fas fa-list"></i> Manage Properties
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Approval -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Pending Approval</h5>
+                    <p class="card-text display-6 fw-bold">@ViewBag.PendingCount</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inquiries Received -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-envelope fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Inquiries Received</h5>
+                    <p class="card-text display-6 fw-bold">@ViewBag.InquiriesCount</p>
+                    <a asp-controller="Lister" asp-action="Inquiries" class="btn btn-info">
+                        <i class="fas fa-eye"></i> View Inquiries
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔹 Reserved Properties Section -->
+    <div class="text-center mt-4">
+        <a asp-controller="Lister" asp-action="ReservedProperties" class="btn btn-outline-warning btn-lg">
+            <i class="fas fa-clock"></i> View Reserved Properties
+        </a>
+    </div>
+
+    <!-- 🔹 Back Button -->
+    <div class="mt-4 text-center">
+        <a onclick="history.back()" class="btn btn-secondary btn-lg">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 10px;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            }
+
+        .btn-lg {
+            padding: 12px 24px;
+            font-size: 1.2rem;
+        }
+    </style>
+}

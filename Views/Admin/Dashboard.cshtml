@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+<link href="~/css/dashboard.css" rel="stylesheet" />
+<div class="container admin-dashboard my-5">
+    <h2 class="text-center text-dark mb-4">Admin Dashboard</h2>
+
+    <!-- Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card card-yellow text-center">
+                <div class="card-body">
+                    <i class="fas fa-clock fa-2x mb-2"></i>
+                    <h5>Pending Properties</h5>
+                    <h2>@ViewBag.PendingPropertiesCount</h2>
+                    <a href="@Url.Action("PendingProperties")" class="btn btn-light mt-2 border border-dark">Review Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-blue text-center">
+                <div class="card-body">
+                    <i class="fas fa-home fa-2x mb-2"></i>
+                    <h5>Total Properties</h5>
+                    <h2>@ViewBag.TotalProperties</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-green text-center">
+                <div class="card-body">
+                    <i class="fas fa-users fa-2x mb-2"></i>
+                    <h5>Total Users</h5>
+                    <h2>@ViewBag.TotalUsers</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- New Card for Approved Properties -->
+    <div class="col-md-4">
+        <div class="card bg-success text-white mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Approved Properties</h5>
+                <p class="card-text">@ViewBag.TotalProperties - @ViewBag.PendingPropertiesCount</p>
+                <a class="btn btn-light" asp-action="ApprovedProperties">View Approved</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <canvas id="propertyStatusChart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <canvas id="userDistributionChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Property Status Chart with Pastel Colors
+            var ctx1 = document.getElementById('propertyStatusChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pending', 'Approved'],
+                datasets: [{
+                    data: [@(@ViewBag.PendingPropertiesCount), @((int)ViewBag.TotalProperties - (int)ViewBag.PendingPropertiesCount)],
+                    backgroundColor: ['#f7d794', '#a8d8ea'], // Soft yellow & pastel blue
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        // User Distribution by Role with Pastel Colors
+        var ctx2 = document.getElementById('userDistributionChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Admins', 'Listers', 'Buyers'],
+                datasets: [{
+                    label: 'Users',
+                    data: [@ViewBag.AdminCount, @ViewBag.ListerCount, @ViewBag.BuyerCount],
+                    backgroundColor: ['#e5b3fe', '#a8d8ea', '#f7d794'], // violet, blue, yellow
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
+}
+
+

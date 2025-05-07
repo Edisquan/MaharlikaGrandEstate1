@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Property>
+@{
+    ViewData["Title"] = "Approved Properties";
+}
+
+<h2 class="mb-4">Approved Properties</h2>
+
+<table class="table table-hover table-striped shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Title</th>
+            <th>Location</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var property in Model)
+        {
+            <tr>
+                <td>@property.Title</td>
+                <td>@property.Location</td>
+                <td>₱@property.Price.ToString("N2")</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(property.ImageUrl))
+                    {
+                        <img src="@Url.Content("~/" + property.ImageUrl)" alt="Property Image" style="max-width: 100px; height: auto;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">No image</span>
+                    }
+                </td>
+                <td>
+                    <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="btn btn-info btn-sm">
+                        <i class="fas fa-info-circle"></i> Details
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Back Button -->
+<div class="mt-3">
+    <a href="@Url.Action("Dashboard", "Admin")" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>

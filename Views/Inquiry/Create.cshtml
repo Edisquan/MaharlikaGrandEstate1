@@ -1,0 +1,22 @@
+﻿@model Inquiry
+@{
+    ViewData["Title"] = "Send Inquiry";
+    // Make sure your controller’s GET action has passed these values:
+    // ViewBag.PropertyId and ViewBag.PropertyTitle
+}
+
+<h2>Send Inquiry for @ViewBag.PropertyTitle</h2>
+
+<form asp-action="Create" asp-route-id="@ViewBag.PropertyId" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label asp-for="Message"></label>
+        <textarea asp-for="Message" class="form-control" rows="4" placeholder="Write your inquiry here..."></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Submit Inquiry</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

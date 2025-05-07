@@ -1,0 +1,132 @@
+﻿@model IEnumerable<Property>
+@{
+    ViewData["Title"] = "Browse Properties";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Browse Properties</h2>
+
+    <!-- Search Bar -->
+    <form method="get" asp-action="Browse" class="mb-4">
+        <div class="input-group search-bar">
+            <input type="text" name="searchString" class="form-control" placeholder="Search by title or location">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+    </form>
+    <a asp-controller="Buyer" asp-action="MyReservations" class="btn btn-outline-info my-reservations-btn">
+        <i class="fas fa-clock"></i> My Reservations
+    </a>
+
+    @if (!Model.Any(p => !p.IsSold))
+    {
+        <div class="alert alert-warning text-center">
+            No properties available for sale. Try searching again.
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var property in Model.Where(p => !p.IsSold))
+            {
+                <div class="col">
+                    <div class="card property-card shadow-sm">
+                        <img src="@Url.Content("~/" + property.ImageUrl)" alt="@property.Title" class="card-img-top property-image">
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@property.Title</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> @property.Location</p>
+                            <p class="fw-bold text-success price">₱@property.Price.ToString("N2")</p>
+
+                            <div class="mt-auto">
+                                <a asp-controller="Buyer" asp-action="Details" asp-route-id="@property.Id" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-info-circle"></i> View Details
+                                </a>
+
+                                @if (!property.IsReserved)
+                                {
+                                    <a asp-controller="Buyer" asp-action="ReservePayment" asp-route-id="@property.Id" class="btn btn-success w-100 reserve-btn">
+                                        <i class="fas fa-handshake"></i> Reserve Property
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark w-100 mt-2">Reserved</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        /* 🔹 General Styles */
+        .container {
+            max-width: 1200px;
+        }
+
+        /* 🔹 Search Bar Styling */
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 🔹 Property Card Styling */
+        .property-card {
+            border-radius: 10px;
+            height: 100%; /* Ensures all cards have equal height */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .property-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            }
+
+        /* 🔹 Property Image */
+        .property-image {
+            height: 220px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        /* 🔹 Card Body */
+        .card-body {
+            flex: 1; /* Makes the body fill available space */
+        }
+
+        /* 🔹 Property Price */
+        .price {
+            font-size: 1.3rem;
+            color: #28a745;
+        }
+
+        /* 🔹 Ensure consistent card heights */
+        .row.row-cols-1.row-cols-md-3 .col {
+            display: flex;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+        }
+        /* Add space below My Reservations button */
+        .my-reservations-btn {
+            margin-bottom: 20px; /* Adjust spacing as needed */
+        }
+
+        /* Add space between View Details and Reserve Property */
+        .reserve-btn {
+            margin-top: 10px; /* Adjust spacing as needed */
+        }
+
+    </style>
+}

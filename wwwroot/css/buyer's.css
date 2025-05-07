@@ -1,0 +1,14 @@
+﻿.card:hover {
+    transform: scale(1.03);
+    transition: all 0.3s ease-in-out;
+}
+
+.card img {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.btn:hover {
+    filter: brightness(90%);
+    transition: 0.3s ease-in-out;
+}

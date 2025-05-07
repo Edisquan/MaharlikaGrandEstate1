@@ -1,0 +1,64 @@
+﻿.property-card {
+    border-radius: 10px;
+    height: 100%; /* Ensures all cards have equal height */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .property-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+.property-image {
+    height: 220px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.property-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+    .property-details span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+.card-body {
+    flex: 1; /* Makes the body fill available space */
+    display: flex;
+    flex-direction: column;
+}
+
+.card-footer {
+    background: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.price {
+    font-size: 1.3rem;
+}
+
+/* Ensure buttons align properly */
+.card-footer .btn {
+    width: 80px;
+    text-align: center;
+}
+
+/* Fix inconsistent card heights */
+.row.row-cols-1.row-cols-md-3 .col {
+    display: flex;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+}

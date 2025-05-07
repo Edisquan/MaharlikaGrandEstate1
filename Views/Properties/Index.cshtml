@@ -1,0 +1,84 @@
+﻿@model IEnumerable<MaharlikaGrandEstate.Models.Property>
+
+@{
+    ViewData["Title"] = "My Properties";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">My Properties</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <a asp-action="Create" class="btn btn-primary shadow-sm">
+                <i class="fas fa-plus"></i> Add New Property
+            </a>
+            <a asp-action="Archived" class="btn btn-warning shadow-sm ms-2">
+                <i class="fas fa-archive"></i> View Archive
+            </a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            No properties found. Add your first property now!
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var prop in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm property-card h-100">
+                        @* Property Image *@
+                        @{
+                            var firstImage = prop.Images?.FirstOrDefault();
+                            var imageUrl = firstImage != null
+                            ? Url.Content("~/" + firstImage.ImageUrl)
+                            : (!string.IsNullOrEmpty(prop.ImageUrl) ? Url.Content("~/" + prop.ImageUrl) : Url.Content("~/images/no-image-available.png"));
+                        }
+                        <img src="@imageUrl" alt="@prop.Title" class="card-img-top property-image" />
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                @prop.Title
+                                <span class="badge @(prop.IsApproved ? "bg-success" : "bg-warning text-dark")" style="font-size: 0.8rem; padding: 5px 8px; margin-left: 5px;">
+                                    @(prop.IsApproved ? "Approved" : "Pending")
+                                </span>
+                            </h5>
+                            <p class="text-muted mb-1">@prop.Location</p>
+                            <p class="fw-bold text-success">₱@prop.Price.ToString("N2")</p>
+
+                            <div class="mt-auto d-flex justify-content-between">
+                                <a asp-action="Details" asp-route-id="@prop.Id" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-info-circle"></i> Details
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@prop.Id" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form asp-action="Archive" asp-route-id="@prop.Id" method="post" style="display: inline;">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-archive"></i> Archive
+                                    </button>
+                                </form>
+
+                                @if (User.IsInRole("Admin") && !prop.IsApproved)
+                                {
+                                    <form asp-action="Approve" asp-route-id="@prop.Id" method="post" style="display: inline;">
+                                        <button type="submit" class="btn btn-outline-success btn-sm">
+                                            <i class="fas fa-check-circle"></i> Approve
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

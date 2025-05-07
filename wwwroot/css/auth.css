@@ -1,0 +1,225 @@
+﻿/* Fullscreen Background */
+body.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('../images/Login1.jpg');
+    background-size: cover;
+    backdrop-filter: blur(7px);
+}
+
+/* Login Container */
+.login-container {
+    display: flex;
+    width: 850px;
+    height: 500px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Image Section */
+.login-left {
+    width: 50%;
+}
+
+.login-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Right Login Form Section */
+.login-right {
+    width: 50%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Login Box */
+.login-box {
+    width: 100%;
+    text-align: center;
+}
+
+/* General input styling */
+.form-control {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: #fff !important;
+    backdrop-filter: blur(10px);
+}
+
+    /* Placeholder text */
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+/* Input labels */
+.form-floating label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Focus effect on inputs */
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.5);
+    color: #fff;
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Ensure Bootstrap's floating labels are visible */
+.form-floating > label {
+    color: #fff !important;
+}
+
+/* Fix button color */
+.btn-primary {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    transition: 0.3s;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+/* Ensuring links are visible */
+a {
+    text-decoration: none;
+    color: #fff !important;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+/* Back Button */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+    .back-button:hover {
+        color: #f8f9fa;
+        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+    }
+
+/* Register Part */
+.register-title {
+    margin-bottom: 30px; /* Adjust the space as needed */
+}
+
+.register-title h2,
+.register-title p {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    margin: 0;
+    padding: 0;
+}
+
+.register-title h2 {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.register-title p {
+    font-size: 18px;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+
+body.register-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('/images/Register1.jpg');
+    background-size: cover;
+}
+
+/* Register Box */
+.register-container {
+    position: relative;
+    width: 400px;
+    padding: 30px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Inputs */
+.register-box .form-control {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+    .register-box .form-control:focus {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+/* General Dropdown Styling */
+.custom-dropdown {
+    appearance: none;
+    background: rgba(255, 255, 255, 0.3); /* Soft transparent */
+    color: white; /* Ensures visibility */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Soft border */
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+    /* Focus Effect */
+    .custom-dropdown:focus {
+        background: rgba(255, 255, 255, 0.5);
+        border-color: white;
+        box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Default Option Styling (Placeholder) */
+    .custom-dropdown option[disabled] {
+        color: #d1d1d1 !important; /* Light grey text */
+        font-style: italic;
+    }
+
+    /* Ensure Options Inside the Dropdown are Readable */
+    .custom-dropdown option {
+        background: white; /* White dropdown */
+        color: black !important; /* Dark text inside dropdown */
+    }
+
+    /* Hover Effect on Dropdown */
+    .custom-dropdown:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+
+.dropdown-menu .dropdown-item {
+    color: #212529 !important; /* Bootstrap's default dark text */
+    font-weight: 500;
+}
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #f8f9fa; /* Light gray on hover */
+    }

@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Property>
+
+@{
+    ViewData["Title"] = "Reserved Properties";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Reserved Properties</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            No properties have been reserved yet.
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var property in Model)
+            {
+                <div class="col">
+                    <div class="card property-card shadow-sm">
+                        <img src="@Url.Content("~/" + property.ImageUrl)" alt="@property.Title" class="card-img-top property-image">
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@property.Title</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> @property.Location</p>
+                            <p class="fw-bold text-success price">₱@property.Price.ToString("N2")</p>
+
+                            <!-- Reservation Details -->
+                            <p class="text-warning">
+                                <i class="fas fa-coins"></i> Reservation Fee: ₱@((property.Price * 0.10M).ToString("N2")) (10% of total price)
+                            </p>
+
+                            @if (property.Buyer != null)
+                            {
+                                <p class="text-muted">
+                                    <i class="fas fa-user"></i> Reserved By: @property.Buyer.FullName
+                                </p>
+                            }
+
+                            <div class="mt-auto">
+                                <a asp-controller="Lister" asp-action="Details" asp-route-id="@property.Id" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-info-circle"></i> View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- Back Button to Dashboard -->
+    <div class="text-center mt-4">
+        <a asp-controller="Lister" asp-action="Dashboard" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .property-card {
+            border-radius: 10px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .property-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            }
+
+        .property-image {
+            height: 220px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-body {
+            flex: 1;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            color: #28a745;
+        }
+
+        .row.row-cols-1.row-cols-md-3 .col {
+            display: flex;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+}

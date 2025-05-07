@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Inquiry>
+@{
+    ViewData["Title"] = "My Inquiries";
+}
+
+<div class="container mt-4">
+    <h2>All Inquiries for My Properties</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info mt-3">
+            No inquiries found for your properties.
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Property Title</th>
+                    <th>Message</th>
+                    <th>Buyer ID</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var inquiry in Model)
+                {
+                    <tr>
+                        <td>@(inquiry.Property?.Title ?? "Unknown Property")</td>
+                        <td>@inquiry.Message</td>
+                        <td>@inquiry.BuyerId</td>
+                        <td>@inquiry.CreatedAt.ToString("g")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- Back Button -->
+    <div class="mt-3">
+        <a onclick="history.back()" class="btn btn-secondary">Back</a>
+    </div>
+</div>
